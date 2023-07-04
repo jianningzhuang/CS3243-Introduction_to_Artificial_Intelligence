@@ -1,0 +1,69 @@
+state representation: position of my_king (r, c) vs describing entire board state?
+
+goal test: if current in goals (goals is a list of goal coordinates)
+
+actions: for valid_move in board.actions(current)
+
+action costs: value of coordinate in grid
+
+transition model: board.move_king(current, valid_move)
+
+
+Node: 
+
+state => position of my_king (r, c)
+parent node => need use Node class?
+action => valid_move in 1 of 8 adjacent/diagonal
+path cost
+depth
+
+BFS need early goal test + Node?
+
+graph search implementation
+
+grid
+
+-1 marks obstacle or piece
+-2 marks threathened position
+set all pieces first in case movements blocked by other pieces
+
+h(n) = manhatten/2 to account for action cost of 1 => consistent
+
+
+    def euclidean_distance(self, goals):
+        min_dist = None
+        for goal in goals:
+            estimate = math.sqrt(abs(self.state[0] - goal[0])**2 + abs(self.state[1] - goal[1])**2)
+            if min_dist == None or estimate < min_dist:
+                min_dist = estimate
+        return min_dist
+
+    def manhatten_distance(self, goals):
+        min_dist = None
+        for goal in goals:
+            estimate = (abs(self.state[0] - goal[0]) + abs(self.state[1] - goal[1]))/2
+            if min_dist == None or estimate < min_dist:
+                min_dist = estimate
+        return min_dist
+
+def get_path(current, parents):
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    moves = []
+    while parents[current] != (-1, -1):
+        parent = parents[current]
+        moves.append([(alphabet[parent[1]], parent[0]), (alphabet[current[1]], current[0])])
+        current = parent
+    result = []
+    for i in range(len(moves) - 1, -1, -1):
+        result.append(moves[i])
+    return result
+
+def get_path(current, parents):
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    moves = []
+    while parents[current] != (-1, -1):
+        parent = parents[current]
+        moves.append([(alphabet[parent[1]], parent[0]), (alphabet[current[1]], current[0])])
+        current = parent
+    return list(reversed(moves))
+
